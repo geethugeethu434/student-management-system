@@ -3,7 +3,7 @@
 // MongoDB Backend Version
 // ======================================================
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "http://student-management-system-eom7.onrender.com";
 
 
 // ======================================================
