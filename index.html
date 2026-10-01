@@ -1,0 +1,2450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Management System</title>
+
+    <!-- LOGIN PROTECTION -->
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div>
+                <h2>EduManage</h2>
+                <span>Student Portal</span>
+            </div>
+
+        </div>
+
+
+        <ul class="menu">
+
+            <li class="menu-item active" data-page="dashboard">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </li>
+
+            <li class="menu-item" data-page="students">
+                <i class="fa-solid fa-user-graduate"></i>
+                <span>Students</span>
+            </li>
+
+            <li class="menu-item" data-page="attendance">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Attendance</span>
+            </li>
+
+            <li class="menu-item" data-page="marks">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Marks</span>
+            </li>
+
+            <li class="menu-item" data-page="courses">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Courses</span>
+            </li>
+
+            <li class="menu-item" data-page="fees">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Fees</span>
+            </li>
+
+            <li class="menu-item" data-page="timetable">
+                <i class="fa-solid fa-clock"></i>
+                <span>Timetable</span>
+            </li>
+
+            <li class="menu-item" data-page="events">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>Events</span>
+            </li>
+
+            <li class="menu-item" data-page="profile">
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+            </li>
+
+        </ul>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="menu-item" data-page="settings">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </div>
+
+            <div class="menu-item logout" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <!-- ================= TOPBAR ================= -->
+
+        <header class="topbar">
+
+            <div class="mobile-menu" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+
+
+            <div>
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+                <p id="pageSubtitle">
+                    Welcome back! Here's your overview.
+                </p>
+
+            </div>
+
+
+            <div class="top-actions">
+
+
+                <!-- GLOBAL SEARCH -->
+
+                <div class="search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="globalSearch"
+                        placeholder="Search...">
+
+                </div>
+
+
+                <!-- DARK MODE -->
+
+                <button
+                    class="icon-btn"
+                    onclick="toggleDarkMode()">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                </button>
+
+
+                <!-- NOTIFICATION -->
+
+                <button
+                    class="icon-btn notification"
+                    onclick="showNotifications()">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span id="notificationCount">
+                        3
+                    </span>
+
+                </button>
+
+
+                <!-- PROFILE -->
+
+                <div
+                    class="profile-small"
+                    onclick="showPage('profile')"
+                    style="cursor:pointer;">
+
+                    <div class="avatar">
+                        G
+                    </div>
+
+                    <div>
+
+                        <strong id="topProfileName">
+                            Geethu
+                        </strong>
+
+                        <small>
+                            Admin
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content">
+
+
+            <!-- ================================================= -->
+            <!-- DASHBOARD -->
+            <!-- ================================================= -->
+
+            <div
+                class="page active-page"
+                id="dashboard">
+
+
+                <div class="welcome-card">
+
+                    <div>
+
+                        <span class="welcome-small">
+                            WELCOME BACK 👋
+                        </span>
+
+                        <h2>
+                            Good Morning, Geethu!
+                        </h2>
+
+                        <p>
+                            Here's what's happening in your
+                            Student Management System today.
+                        </p>
+
+                    </div>
+
+
+                    <div class="welcome-icon">
+                        🎓
+                    </div>
+
+                </div>
+
+
+                <!-- STATISTICS -->
+
+                <div class="stats-grid">
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+
+                            <i class="fa-solid fa-user-graduate"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Total Students
+                            </p>
+
+                            <h2 id="totalStudents">
+                                0
+                            </h2>
+
+                            <span class="positive">
+                                Active students
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+
+                            <i class="fa-solid fa-user-check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Present Today
+                            </p>
+
+                            <h2 id="dashboardPresent">
+                                0
+                            </h2>
+
+                            <span class="positive">
+                                Attendance
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon orange">
+
+                            <i class="fa-solid fa-book"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Total Courses
+                            </p>
+
+                            <h2 id="dashboardCourses">
+                                0
+                            </h2>
+
+                            <span>
+                                Academic courses
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon purple">
+
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Fees Collected
+                            </p>
+
+                            <h2 id="dashboardFees">
+                                ₹0
+                            </h2>
+
+                            <span class="positive">
+                                Current collection
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DASHBOARD GRID -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- RECENT STUDENTS -->
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Recent Students
+                                </h3>
+
+                                <p>
+                                    Recently added students
+                                </p>
+
+                            </div>
+
+
+                            <button
+                                class="primary-btn"
+                                onclick="showPage('students')">
+
+                                View All
+
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="student-list"
+                            id="recentStudents">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- UPCOMING EVENTS -->
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Upcoming Events
+                                </h3>
+
+                                <p>
+                                    Don't miss these events
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="dashboardEvents">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- STUDENTS -->
+            <!-- ================================================= -->
+
+            <div
+                class="page"
+                id="students">
+
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h2>
+                            Student Management
+                        </h2>
+
+                        <p>
+                            Manage all registered students
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="openModal()">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Student
+
+                    </button>
+
+                </div>
+
+
+                <div class="card">
+
+
+                    <div class="table-controls">
+
+
+                        <div class="search-table">
+
+                            <i class="fa-solid fa-search"></i>
+
+                            <input
+                                type="text"
+                                id="studentSearch"
+                                placeholder="Search students..."
+                                onkeyup="searchStudents()">
+
+                        </div>
+
+
+                        <select
+                            id="departmentFilter"
+                            onchange="filterByDepartment()">
+
+                            <option value="All Departments">
+                                All Departments
+                            </option>
+
+                            <option value="AI & DS">
+                                AI & DS
+                            </option>
+
+                            <option value="CSE">
+                                CSE
+                            </option>
+
+                            <option value="ECE">
+                                ECE
+                            </option>
+
+                            <option value="EEE">
+                                EEE
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table id="studentTable">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>ID</th>
+                                    <th>Student</th>
+                                    <th>Department</th>
+                                    <th>Year</th>
+                                    <th>Attendance</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="studentTableBody">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- ATTENDANCE -->
+            <!-- ================================================= -->
+
+            <div
+                class="page"
+                id="attendance">
+
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h2>
+                            Attendance
+                        </h2>
+
+                        <p>
+                            Track student attendance
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="markAttendance()">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Mark Attendance
+
+                    </button>
+
+                </div>
+
+
+                <div class="attendance-cards">
+
+
+                    <div class="attendance-card">
+
+                        <span>
+                            Overall Attendance
+                        </span>
+
+                        <strong id="overallAttendance">
+                            0%
+                        </strong>
+
+                        <div class="big-progress">
+
+                            <span
+                                id="attendanceProgress"
+                                style="width:0%">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="attendance-card">
+
+                        <span>
+                            Present Today
+                        </span>
+
+                        <strong id="presentCount">
+                            0
+                        </strong>
+
+                        <small>
+                            Students present
+                        </small>
+
+                    </div>
+
+
+                    <div class="attendance-card">
+
+                        <span>
+                            Absent Today
+                        </span>
+
+                        <strong id="absentCount">
+                            0
+                        </strong>
+
+                        <small>
+                            Students absent
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card attendance-table">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Today's Attendance
+                            </h3>
+
+                            <p>
+                                Click status to change
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table id="attendanceTable">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Student
+                                    </th>
+
+                                    <th>
+                                        Department
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="attendanceTableBody">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- MARKS -->
+            <!-- ================================================= -->
+
+            <div
+                class="page"
+                id="marks">
+
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h2>
+                            Marks & Results
+                        </h2>
+
+                        <p>
+                            Manage student academic performance
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="openMarksModal()">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Marks
+
+                    </button>
+
+                </div>
+
+
+                <div class="marks-grid">
+
+
+                    <div class="mark-card">
+
+                        <span>
+                            Total Records
+                        </span>
+
+                        <strong id="totalMarksRecords">
+                            0
+                        </strong>
+
+                        <small>
+                            Marks entered
+                        </small>
+
+                    </div>
+
+
+                    <div class="mark-card">
+
+                        <span>
+                            Average Marks
+                        </span>
+
+                        <strong id="averageMarks">
+                            0
+                        </strong>
+
+                        <small>
+                            Overall average
+                        </small>
+
+                    </div>
+
+
+                    <div class="mark-card">
+
+                        <span>
+                            Pass Percentage
+                        </span>
+
+                        <strong id="passPercentage">
+                            0%
+                        </strong>
+
+                        <small>
+                            Overall result
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MARKS FORM -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Add Student Marks
+                            </h3>
+
+                            <p>
+                                Enter marks and automatically
+                                calculate grade
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <form
+                        id="marksForm"
+                        onsubmit="addMarks(event)">
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Student
+                                </label>
+
+                                <select
+                                    id="marksStudent"
+                                    required>
+
+                                    <option value="">
+                                        Select Student
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Subject
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="marksSubject"
+                                    placeholder="Example: Machine Learning"
+                                    required>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Marks
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="marksValue"
+                                    min="0"
+                                    max="100"
+                                    placeholder="Enter marks"
+                                    required>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Maximum Marks
+                                </label>
+
+                                <input
+                                    type="number"
+                                    value="100"
+                                    readonly>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="modal-actions">
+
+                            <button
+                                type="submit"
+                                class="primary-btn">
+
+                                <i class="fa-solid fa-save"></i>
+
+                                Save Marks
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- MARKS TABLE -->
+
+                <div class="card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Student Results
+                            </h3>
+
+                            <p>
+                                Saved academic records
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Student
+                                    </th>
+
+                                    <th>
+                                        Subject
+                                    </th>
+
+                                    <th>
+                                        Marks
+                                    </th>
+
+                                    <th>
+                                        Percentage
+                                    </th>
+
+                                    <th>
+                                        Grade
+                                    </th>
+
+                                    <th>
+                                        Result
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="marksTableBody">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- COURSES -->
+            <!-- ================================================= -->
+
+            <div
+                class="page"
+                id="courses">
+
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h2>
+                            Courses
+                        </h2>
+
+                        <p>
+                            Manage academic courses
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="openCourseModal()">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Course
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="course-grid"
+                    id="courseGrid">
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FEES -->
+            <!-- ================================================= -->
+
+            <div
+                class="page"
+                id="fees">
+
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h2>
+                            Fee Management
+                        </h2>
+
+                        <p>
+                            Track student fee payments
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="openFeeModal()">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Record Payment
+
+                    </button>
+
+                </div>
+
+
+                <div class="stats-grid">
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Collected
+                            </p>
+
+                            <h2 id="feesCollected">
+                                ₹0
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon orange">
+
+                            <i class="fa-solid fa-hourglass"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Pending
+                            </p>
+
+                            <h2 id="feesPending">
+                                ₹0
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Payment Records
+                            </h3>
+
+                            <p>
+                                Student fee payment history
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Student
+                                    </th>
+
+                                    <th>
+                                        Course
+                                    </th>
+
+                                    <th>
+                                        Amount
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="feesTableBody">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- TIMETABLE -->
+            <!-- ================================================= -->
+
+            <div
+                class="page"
+                id="timetable">
+
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h2>
+                            Class Timetable
+                        </h2>
+
+                        <p>
+                            Weekly class schedule
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="openTimetableModal()">
+
+                        <i class="fa-solid fa-pen"></i>
+
+                        Edit Timetable
+
+                    </button>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="table-wrapper">
+
+                        <table class="timetable">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Time
+                                    </th>
+
+                                    <th>
+                                        Monday
+                                    </th>
+
+                                    <th>
+                                        Tuesday
+                                    </th>
+
+                                    <th>
+                                        Wednesday
+                                    </th>
+
+                                    <th>
+                                        Thursday
+                                    </th>
+
+                                    <th>
+                                        Friday
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="timetableBody">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- EVENTS -->
+            <!-- ================================================= -->
+
+            <div
+                class="page"
+                id="events">
+
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h2>
+                            College Events
+                        </h2>
+
+                        <p>
+                            Upcoming activities and events
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="openEventModal()">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Create Event
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="event-grid"
+                    id="eventGrid">
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- PROFILE -->
+            <!-- ================================================= -->
+
+            <div
+                class="page"
+                id="profile">
+
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h2>
+                            My Profile
+                        </h2>
+
+                        <p>
+                            Manage your account information
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-card">
+
+
+                    <div class="profile-big-avatar">
+                        G
+                    </div>
+
+
+                    <h2 id="profileName">
+                        Geethu
+                    </h2>
+
+
+                    <p id="profileRole">
+                        Administrator
+                    </p>
+
+
+                    <div class="profile-details">
+
+
+                        <div>
+
+                            <span>
+                                Email
+                            </span>
+
+                            <strong id="profileEmail">
+                                geethu@example.com
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Department
+                            </span>
+
+                            <strong id="profileDepartment">
+                                AI & DS
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Role
+                            </span>
+
+                            <strong>
+                                Admin
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="openProfileModal()">
+
+                        <i class="fa-solid fa-pen"></i>
+
+                        Edit Profile
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SETTINGS -->
+            <!-- ================================================= -->
+
+            <div
+                class="page"
+                id="settings">
+
+
+                <div class="page-header">
+
+                    <div>
+
+                        <h2>
+                            Settings
+                        </h2>
+
+                        <p>
+                            Customize your dashboard
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card settings-card">
+
+
+                    <!-- DARK MODE -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <strong>
+                                Dark Mode
+                            </strong>
+
+                            <p>
+                                Change dashboard appearance
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="darkToggle"
+                                onchange="toggleDarkMode()">
+
+                            <span></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- NOTIFICATIONS -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <strong>
+                                Notifications
+                            </strong>
+
+                            <p>
+                                Receive system notifications
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="notificationToggle"
+                                checked
+                                onchange="saveSettings()">
+
+                            <span></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <strong>
+                                Email Alerts
+                            </strong>
+
+                            <p>
+                                Receive important email updates
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="emailToggle"
+                                checked
+                                onchange="saveSettings()">
+
+                            <span></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- ADD STUDENT MODAL -->
+<!-- ================================================= -->
+
+<div
+    class="modal-overlay"
+    id="studentModal">
+
+
+    <div class="modal">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Add New Student
+                </h2>
+
+                <p>
+                    Enter student details below
+                </p>
+
+            </div>
+
+
+            <button onclick="closeModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form
+            id="studentForm"
+            onsubmit="addStudent(event)">
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Student Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter name"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <select
+                        id="studentDepartment"
+                        required>
+
+                        <option value="">
+                            Select Department
+                        </option>
+
+                        <option>
+                            AI & DS
+                        </option>
+
+                        <option>
+                            CSE
+                        </option>
+
+                        <option>
+                            ECE
+                        </option>
+
+                        <option>
+                            EEE
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Year
+                    </label>
+
+                    <select
+                        id="studentYear"
+                        required>
+
+                        <option value="">
+                            Select Year
+                        </option>
+
+                        <option>
+                            1st Year
+                        </option>
+
+                        <option>
+                            2nd Year
+                        </option>
+
+                        <option>
+                            3rd Year
+                        </option>
+
+                        <option>
+                            4th Year
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="studentEmail"
+                        placeholder="student@email.com"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Student
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- ADD COURSE MODAL -->
+<!-- ================================================= -->
+
+<div
+    class="modal-overlay"
+    id="courseModal">
+
+
+    <div class="modal">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Add Course
+                </h2>
+
+                <p>
+                    Enter course details
+                </p>
+
+            </div>
+
+
+            <button onclick="closeCourseModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form
+            onsubmit="addCourse(event)">
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Course Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="courseName"
+                        placeholder="Example: Python"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <input
+                        type="text"
+                        id="courseDepartment"
+                        placeholder="Example: AI & DS"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Number of Students
+                    </label>
+
+                    <input
+                        type="number"
+                        id="courseStudents"
+                        min="0"
+                        value="0"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeCourseModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Save Course
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- FEE MODAL -->
+<!-- ================================================= -->
+
+<div
+    class="modal-overlay"
+    id="feeModal">
+
+
+    <div class="modal">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Record Payment
+                </h2>
+
+                <p>
+                    Add student fee payment
+                </p>
+
+            </div>
+
+
+            <button onclick="closeFeeModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form
+            onsubmit="addFee(event)">
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Student
+                    </label>
+
+                    <select
+                        id="feeStudent"
+                        required>
+
+                        <option value="">
+                            Select Student
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Course
+                    </label>
+
+                    <input
+                        type="text"
+                        id="feeCourse"
+                        placeholder="Example: AI & DS"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        id="feeAmount"
+                        min="1"
+                        placeholder="Enter amount"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select
+                        id="feeStatus"
+                        required>
+
+                        <option value="Paid">
+                            Paid
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeFeeModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Save Payment
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- TIMETABLE MODAL -->
+<!-- ================================================= -->
+
+<div
+    class="modal-overlay"
+    id="timetableModal">
+
+
+    <div class="modal">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Edit Timetable
+                </h2>
+
+                <p>
+                    Add a timetable subject
+                </p>
+
+            </div>
+
+
+            <button onclick="closeTimetableModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form
+            onsubmit="addTimetable(event)">
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Time
+                    </label>
+
+                    <input
+                        type="text"
+                        id="timeSlot"
+                        placeholder="9:00 - 10:00"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Day
+                    </label>
+
+                    <select
+                        id="timetableDay"
+                        required>
+
+                        <option value="">
+                            Select Day
+                        </option>
+
+                        <option>
+                            Monday
+                        </option>
+
+                        <option>
+                            Tuesday
+                        </option>
+
+                        <option>
+                            Wednesday
+                        </option>
+
+                        <option>
+                            Thursday
+                        </option>
+
+                        <option>
+                            Friday
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Subject
+                    </label>
+
+                    <input
+                        type="text"
+                        id="timetableSubject"
+                        placeholder="Example: Python"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeTimetableModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Save Timetable
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- EVENT MODAL -->
+<!-- ================================================= -->
+
+<div
+    class="modal-overlay"
+    id="eventModal">
+
+
+    <div class="modal">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Create Event
+                </h2>
+
+                <p>
+                    Add a college event
+                </p>
+
+            </div>
+
+
+            <button onclick="closeEventModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form
+            onsubmit="addEvent(event)">
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Event Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="eventName"
+                        placeholder="Example: Tech Fest"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Event Type
+                    </label>
+
+                    <select
+                        id="eventType"
+                        required>
+
+                        <option>
+                            TECHNICAL
+                        </option>
+
+                        <option>
+                            ACADEMIC
+                        </option>
+
+                        <option>
+                            SPORTS
+                        </option>
+
+                        <option>
+                            CULTURAL
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="eventDate"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        id="eventLocation"
+                        placeholder="Example: Seminar Hall"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeEventModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Create Event
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- PROFILE MODAL -->
+<!-- ================================================= -->
+
+<div
+    class="modal-overlay"
+    id="profileModal">
+
+
+    <div class="modal">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Edit Profile
+                </h2>
+
+                <p>
+                    Update your account information
+                </p>
+
+            </div>
+
+
+            <button onclick="closeProfileModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form
+            onsubmit="updateProfile(event)">
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileNameInput"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="profileEmailInput"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profileDepartmentInput"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeProfileModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Save Profile
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- TOAST -->
+<!-- ================================================= -->
+
+<div
+    class="toast"
+    id="toast">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="toastText">
+        Success!
+    </span>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
