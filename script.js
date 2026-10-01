@@ -306,7 +306,7 @@ async function loadStudents() {
     try {
 
         const response =
-            await fetch(`${API_URL}/students`);
+            await fetch(`${API_URL}/api/students`);
 
         if (!response.ok) {
 
